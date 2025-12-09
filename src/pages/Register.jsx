@@ -44,6 +44,13 @@ const Register = () => {
 
         const mainPhotURL = res.data.data.display_url
 
+        const formData = {
+            email,
+            name,
+            password,
+            mainPhotURL,
+        }
+
         if (res.data.success == true) {
 
             registerWithEmailPAssword(email, password)
@@ -54,6 +61,15 @@ const Register = () => {
                     }).then(() => {
                         // console.log(userCredential.user);
                         setUser(userCredential.user)
+                        axios.post('http://localhost:3000/users', formData)
+                            .then(res => {
+                                console.log(res.data);
+
+                            })
+                            .catch(err => {
+                                console.log(err);
+
+                            })
                     }).catch((error) => {
                         console.log(error)
                     });

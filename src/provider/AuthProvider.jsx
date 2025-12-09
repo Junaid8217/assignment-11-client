@@ -1,7 +1,8 @@
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import auth from '../firebase/firebase.config';
-  import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
 
 
 export const AuthContext = createContext()
@@ -12,6 +13,7 @@ const AuthProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null)
+    const [role, setRole] = useState("")
 
     const registerWithEmailPAssword = (email, pass) => {
         // console.log(email, pass)
@@ -23,16 +25,37 @@ const AuthProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
             setLoading(false)
+
         })
+
         //clear up function
         return () => {
             unsubscribe()
         }
     }, [])
 
+
+
     const handleGoogleSignIn = () => {
         return signInWithPopup(auth, googleProvider)
     }
+
+
+    //to get the role of the user
+    useEffect(() => {
+        if (!user) return;
+        axios.get(`http://localhost:3000/users/role/${user.email}`)
+            .then(res => {
+                console.log(res.data.role)
+                setLoading(false)
+            })
+            .catch(err=>{
+                console.log(err);
+                
+            })
+    }, [user])
+
+
 
     const authData = {
         registerWithEmailPAssword,
@@ -40,7 +63,7 @@ const AuthProvider = ({ children }) => {
         user,
         handleGoogleSignIn,
         loading,
-        
+
     }
 
     return <AuthContext value={authData}>
