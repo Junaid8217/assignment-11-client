@@ -17,8 +17,10 @@ const Register = () => {
         const password = e.target.pass.value;
         const photoUrl = e.target.photoURL;
         const file = photoUrl.files[0]
+        const role = e.target.role.value
 
-
+        
+        
 
 
         const upperCase = /[A-Z]/;
@@ -49,6 +51,7 @@ const Register = () => {
             name,
             password,
             mainPhotURL,
+            role
         }
 
         if (res.data.success == true) {
@@ -119,6 +122,11 @@ const Register = () => {
                             <input name='email' type="email" className="input" placeholder="Email" />
                             <label className="label">PhotoURL</label>
                             <input name='photoURL' type="file" className="input" placeholder="PhotoURL" />
+                            <select name='role' defaultValue="Select Role" className="select">
+                                <option disabled={true}>Select Role</option>
+                                <option value='manager'>Manager</option>
+                                <option value='buyer'>Buyer</option>
+                            </select>
                             <label className="label">Password</label>
                             <input name='pass' type="password" className="input" placeholder="Password" />
 

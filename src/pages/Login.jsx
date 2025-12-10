@@ -6,14 +6,13 @@ import { AuthContext } from '../provider/AuthProvider';
 
 const Login = () => {
 
-  const { setUser, handleGoogleSignIn, user } = useContext(AuthContext)
+  const { setUser, handleGoogleSignIn } = useContext(AuthContext)
 
   const location = useLocation()
   const navigate= useNavigate()
 
   const [email, setEmail] = useState("")
 
-  console.log(location);
   
 
   const handleSubmit = (e) => {
@@ -21,7 +20,6 @@ const Login = () => {
     const email = e.target.email.value;
     const pass = e.target.pass.value;
 
-    
 
     // console.log(email, pass)
 
@@ -53,7 +51,7 @@ const Login = () => {
     
   }
 
-  console.log(user)
+  
 
   const handleForget = () => {
     navigate(`/forget/${email}`)
