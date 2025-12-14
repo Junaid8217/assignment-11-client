@@ -17,7 +17,7 @@ const Aside = () => {
 
       <ul className="menu space-y-2 text-lg">
 
-        <li>
+        {/* <li>
           <NavLink
             to="/dashboard/main"
             onClick={closeDrawer}
@@ -27,17 +27,17 @@ const Aside = () => {
           >
             <FiHome /> Dashboard
           </NavLink>
-        </li>
+        </li> */}
 
         <li>
           <NavLink
-            to="/dashboard/add-product"
+            to="/dashboard/add-request"
             onClick={closeDrawer}
             className={({ isActive }) =>
               "flex items-center gap-3 p-2" + (isActive ? " " + activeClass : "")
             }
           >
-            <FiHome /> Add Product
+            <FiHome /> Add Request
           </NavLink>
         </li>
 

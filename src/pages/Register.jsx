@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { AuthContext } from '../provider/AuthProvider';
 import { updateProfile } from 'firebase/auth';
@@ -10,6 +10,28 @@ const Register = () => {
 
     const { registerWithEmailPAssword, setUser, user, handleGoogleSignIn } = useContext(AuthContext)
 
+    const [upazilas, setUpazilas] = useState([])
+    const [districts, setDistricts] = useState([]);
+    const [district, setDistrict]= useState('')
+    const[upazila, setUpazila] = useState('')
+
+    useEffect(()=>{
+        axios.get('./upazila.json')
+        .then(res=>{
+            setUpazilas(res.data.upazilas)
+            
+            
+        })
+
+        axios.get('./district.json')
+        .then(res=>{
+            setDistricts(res.data.districts)
+        })
+    },[])
+
+   
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const email = e.target.email.value;
@@ -17,10 +39,10 @@ const Register = () => {
         const password = e.target.pass.value;
         const photoUrl = e.target.photoURL;
         const file = photoUrl.files[0]
-        const role = e.target.role.value
+        const blood = e.target.blood.value
 
-        
-        
+
+
 
 
         const upperCase = /[A-Z]/;
@@ -47,13 +69,19 @@ const Register = () => {
         const mainPhotURL = res.data.data.display_url
 
         const formData = {
-            email,
             name,
+            email,
             password,
             mainPhotURL,
-            role
+            blood,
+             district, 
+             upazila
+
         }
 
+    
+        
+        
         if (res.data.success == true) {
 
             registerWithEmailPAssword(email, password)
@@ -64,7 +92,7 @@ const Register = () => {
                     }).then(() => {
                         // console.log(userCredential.user);
                         setUser(userCredential.user)
-                        axios.post('http://localhost:3000/users', formData)
+                        axios.post('http://localhost:3000/Users', formData)
                             .then(res => {
                                 console.log(res.data);
 
@@ -122,11 +150,33 @@ const Register = () => {
                             <input name='email' type="email" className="input" placeholder="Email" />
                             <label className="label">PhotoURL</label>
                             <input name='photoURL' type="file" className="input" placeholder="PhotoURL" />
-                            <select name='role' defaultValue="Select Role" className="select">
-                                <option disabled={true}>Select Role</option>
-                                <option value='manager'>Manager</option>
-                                <option value='buyer'>Buyer</option>
+                            <label className="label">Blood Group</label>
+                            <select name='blood' defaultValue="Select Blood Group" className="select">
+                                <option value="">-- Select Blood Group --</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
                             </select>
+                            <label className="label">District</label>
+                            <select value={district} onChange={(e)=>setDistrict(e.target.value)} className="select">
+                                <option disabled selected value=''>Select Your District</option>
+                                {
+                                    districts.map(d=> <option value={d?.name} key={d.id}>{d?.name}</option>)
+                                }
+                            </select>
+                            <label className="label">Upazila</label>
+                            <select value={upazila} onChange={(e)=>setUpazila(e.target.value)} className="select">
+                                <option disabled selected value=''>Select Your Upazila</option>
+                                {
+                                    upazilas.map(d=> <option value={d?.name} key={d.id}>{d?.name}</option>)
+                                }
+                            </select>
+
                             <label className="label">Password</label>
                             <input name='pass' type="password" className="input" placeholder="Password" />
 
