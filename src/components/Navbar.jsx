@@ -25,20 +25,22 @@ const Navbar = () => {
       <ul
         tabIndex="-1"
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li><a>Item 1</a></li>
-        <li><a>Item 3</a></li>
+        <li><Link><a>All Request</a></Link></li>
+        <li><Link><a>Search</a></Link></li>
+        <li><Link to='/donate'><a>Donate</a></Link></li>
       </ul>
     </div>
     <a className="btn btn-ghost text-xl">daisyUI</a>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
-      <li><a>Item 1</a></li>
-      <li><a>Item 3</a></li>
+      <li><Link><a>All Request</a></Link></li>
+        <li><Link><a>Search</a></Link></li>
+        <li><Link to='/donate'><a>Donate</a></Link></li>
     </ul>
   </div>
   <div className="navbar-end">
-    <Link to='/dashboard/main' className='btn mr-2'>Dashboard</Link>
+    <Link to='/dashboard' className='btn mr-2'>Dashboard</Link>
     {
         user? (<Link onClick={logOut} className="btn">Logout</Link>) :(<Link to='/login' className="btn">Login</Link>)
     }

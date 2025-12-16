@@ -74,8 +74,8 @@ const Register = () => {
             password,
             mainPhotURL,
             blood,
-             district, 
-             upazila
+            district, 
+            upazila
 
         }
 

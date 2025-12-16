@@ -1,0 +1,106 @@
+import React, { useContext, useEffect, useState } from 'react';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { AuthContext } from '../../provider/AuthProvider';
+
+const AllUsers = () => {
+
+    const axiosSecure = useAxiosSecure();
+    const [users, setUsers] = useState([])
+    const {user, loading } = useContext(AuthContext)
+
+    const fetchUser = () => {
+        axiosSecure.get('/users')
+        .then(res=>{
+            setUsers(res.data)
+        })
+        .catch(err=>{
+            console.log(err);
+            
+        })
+    }
+
+    useEffect(()=>{
+        if (loading || !user) return;
+        fetchUser()
+        
+    },[axiosSecure])
+
+    console.log(users);
+
+    const handleStatusChange = (email, status) => {
+        axiosSecure.patch(`/update/user/status?email=${email}&status=${status}`)
+        .then(res=>{
+            console.log(res.data);
+            fetchUser()
+            
+            
+        })
+    }
+    
+    
+    return (
+        <div>
+            <div className="overflow-x-auto">
+  <table className="table">
+    {/* head */}
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Blood Group</th>
+        <th>Email</th>
+        <th>District</th>
+        <th>Upazila</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {/* row 1 */}
+      {
+        users?.map(user=><tr>
+        
+        <td>
+          <div className="flex items-center gap-3">
+            <div className="avatar">
+              <div className="mask mask-squircle h-12 w-12">
+                <img
+                  src={user?.mainPhotURL}
+                  alt="Avatar Tailwind CSS Component" />
+              </div>
+            </div>
+            <div>
+              <div className="font-bold">{user?.name}</div>
+              <div className="text-sm opacity-50">{user?.role}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          {user?.blood}
+          
+        </td>
+        <td>{user?.email}</td>
+        <td>{user?.district}</td>
+        <td>{user?.upazila}</td>
+        <td>{user?.status}</td>
+        <th className='flex gap-3'>
+          {
+            user?.status=='active'?(<button onClick={()=>handleStatusChange(user?.email, 'blocked')} className="btn btn-primary btn-sm">Block</button>): (<button onClick={()=>handleStatusChange(user?.email, 'active')} className="btn btn-primary btn-sm">Active</button>)
+          }
+          
+        </th>
+      </tr>)
+      }
+    </tbody>
+    
+  </table>
+</div>
+        </div>
+    );
+};
+
+export default AllUsers;
+
+//(<button onClick={()=>handleStatusChange(user?.email, 'active')} className="btn btn-primary btn-sm">Active</button>)
+
+//(<button onClick={()=>handleStatusChange(user?.email, 'blocked')} className="btn btn-sm btn-error">Blocked</button>)
+

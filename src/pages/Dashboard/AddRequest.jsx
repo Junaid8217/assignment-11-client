@@ -1,28 +1,34 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../provider/AuthProvider';
+import { toast } from 'react-toastify';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const AddRequest = () => {
 
-    
+    const { user } = useContext(AuthContext)
 
     const [upazilas, setUpazilas] = useState([])
     const [districts, setDistricts] = useState([]);
-    const [district, setDistrict]= useState('')
-    const[upazila, setUpazila] = useState('')
+    const [district, setDistrict] = useState('')
+    const [upazila, setUpazila] = useState('')
 
-    useEffect(()=>{
+
+    const axiosSecure = useAxiosSecure();
+
+    useEffect(() => {
         axios.get('/upazila.json')
-        .then(res=>{
-            setUpazilas(res.data.upazilas)
-            
-            
-        })
+            .then(res => {
+                setUpazilas(res.data.upazilas)
+
+
+            })
 
         axios.get('/district.json')
-        .then(res=>{
-            setDistricts(res.data.districts)
-        })
-    },[])
+            .then(res => {
+                setDistricts(res.data.districts)
+            })
+    }, [])
 
     // console.log(upazilas, districts)
     // return
@@ -42,14 +48,30 @@ const AddRequest = () => {
             donationTime: e.target.donationTime.value,
             requestMessage: e.target.requestMessage.value,
             donationStatus: "pending",
-            district, 
-             upazila
+            district,
+            upazila
 
         };
 
-        console.log(formData);
-        
+
+        axiosSecure.post('/request', formData)
+        .then(()=>{
+            toast("Request Added Successfully")
+            e.target.reset()
+        })
+        .catch(err=>{
+            console.log(err);
+            
+        })
+
+
     };
+    // console.log(user);
+    
+   
+    
+
+
 
 
 
@@ -59,31 +81,34 @@ const AddRequest = () => {
                 onSubmit={handleSubmit}
                 className="max-w-lg mx-auto p-6 bg-white shadow-md rounded"
             >
-                
+
                 <div className="mb-4">
                     <label className="block mb-1">Requester Name</label>
                     <input
                         type="text"
                         name="requesterName"
                         readOnly
-                        defaultValue="John Doe"
+                        defaultValue={user?.displayName
+                        }
                         className="w-full border px-3 py-2 rounded bg-gray-100"
                     />
                 </div>
 
-                
+
                 <div className="mb-4">
                     <label className="block mb-1">Requester Email</label>
                     <input
                         type="email"
                         name="requesterEmail"
                         readOnly
-                        defaultValue="johndoe@example.com"
+                        defaultValue={user?.
+                            email
+                        }
                         className="w-full border px-3 py-2 rounded bg-gray-100"
                     />
                 </div>
 
-                
+
                 <div className="mb-4">
                     <label className="block mb-1">Recipient Name</label>
                     <input
@@ -95,22 +120,26 @@ const AddRequest = () => {
                     />
                 </div>
 
-                <label className="label">District</label>
-                <select value={district} onChange={(e) => setDistrict(e.target.value)} className="select">
-                    <option disabled selected value=''>Select Your District</option>
-                    {
-                        districts.map(d => <option value={d?.name} key={d.id}>{d?.name}</option>)
-                    }
-                </select>
-                <label className="label">Upazila</label>
-                <select value={upazila} onChange={(e) => setUpazila(e.target.value)} className="select">
-                    <option disabled selected value=''>Select Your Upazila</option>
-                    {
-                        upazilas.map(d => <option value={d?.name} key={d.id}>{d?.name}</option>)
-                    }
-                </select>
+                <div className="mb-4">
+                    <label className="block mb-1 ">District</label>
+                    <select value={district} onChange={(e) => setDistrict(e.target.value)} className="select w-full border px-3 py-2 rounded">
+                        <option disabled selected value=''>Select Your District</option>
+                        {
+                            districts.map(d => <option value={d?.name} key={d.id}>{d?.name}</option>)
+                        }
+                    </select>
+                </div>
+                <div className="mb-4">
+                    <label className="block mb-1">Upazila</label>
+                    <select value={upazila} onChange={(e) => setUpazila(e.target.value)} className="select w-full border px-3 py-2 rounded">
+                        <option disabled selected value=''>Select Your Upazila</option>
+                        {
+                            upazilas.map(d => <option value={d?.name} key={d.id}>{d?.name}</option>)
+                        }
+                    </select>
+                </div>
 
-             
+
                 <div className="mb-4">
                     <label className="block mb-1">Hospital Name</label>
                     <input
@@ -133,7 +162,7 @@ const AddRequest = () => {
                     />
                 </div>
 
-       
+
                 <div className="mb-4">
                     <label className="block mb-1">Blood Group</label>
                     <select name="blood" className="w-full border px-3 py-2 rounded" required>
@@ -149,7 +178,7 @@ const AddRequest = () => {
                     </select>
                 </div>
 
-          
+
                 <div className="mb-4">
                     <label className="block mb-1">Donation Date</label>
                     <input type="date" name="donationDate" className="w-full border px-3 py-2 rounded" required />
@@ -160,7 +189,7 @@ const AddRequest = () => {
                     <input type="time" name="donationTime" className="w-full border px-3 py-2 rounded" required />
                 </div>
 
-  
+
                 <div className="mb-4">
                     <label className="block mb-1">Request Message</label>
                     <textarea
