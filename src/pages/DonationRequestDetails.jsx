@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../provider/AuthProvider';
 import useAxios from '../hooks/useAxios';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+import { toast } from 'react-toastify';
 
 const DonationRequestDetails = () => {
   const { id } = useParams();
@@ -11,19 +13,60 @@ const DonationRequestDetails = () => {
   const [request, setRequest] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
+
+
+  const axiosSecure = useAxiosSecure();
+    const [users, setUsers] = useState([])
+    const { loading } = useContext(AuthContext)
+
+    const fetchUser = () => {
+        axiosSecure.get('/users')
+        .then(res=>{
+            setUsers(res.data)
+        })
+        .catch(err=>{
+            console.log(err);
+            
+        })
+    }
+
+    useEffect(()=>{
+        if (loading || !user) return;
+        fetchUser()
+        
+    },[axiosSecure])
+
+    // console.log(users);
+
+//     const handleStatusChange = (id, 
+// donationStatus) => {
+//         axiosSecure.patch(`/update/donation/status?id=${id}&donationStatus=${donationStatus}`)
+//         .then(res=>{
+//             console.log(res.data);
+//             fetchUser()    
+//         })
+//     }
+
+
+
+
+
+
+
   useEffect(() => {
     axiosInstance.get(`/request-details/${id}`)
       .then(res => setRequest(res.data))
       .catch(err => console.log(err));
   }, [axiosInstance, id]);
 
-  const handleConfirmDonation = async () => {
+  const handleConfirmDonation = async (id, 
+donationStatus) => {
     try {
-      await axiosInstance.patch(`/request-status/${id}`, {
-        donationStatus: 'inprogress',
-        donorName: user.displayName,
-        donorEmail: user.email,
-      });
+      await axiosSecure.patch(`/update/donation/status?id=${id}&donationStatus=${donationStatus}`)
+        .then(res=>{
+            console.log(res.data);
+            fetchUser()    
+        })
 
       setRequest(prev => ({
         ...prev,
@@ -31,8 +74,9 @@ const DonationRequestDetails = () => {
       }));
 
       setOpenModal(false);
-      alert('Donation confirmed successfully!');
-    } catch (error) {
+      toast("Donation Confirm Successfully")
+    } 
+    catch (error) {
       console.error(error);
     }
   };
@@ -105,7 +149,7 @@ const DonationRequestDetails = () => {
                 Cancel
               </button>
               <button
-                onClick={handleConfirmDonation}
+                onClick={()=>handleConfirmDonation(request._id, 'inprogress')}
                 className="w-1/2 bg-red-600 hover:bg-red-700 text-white py-2 rounded"
               >
                 Confirm
