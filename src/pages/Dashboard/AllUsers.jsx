@@ -27,8 +27,8 @@ const AllUsers = () => {
 
     console.log(users);
 
-    const handleStatusChange = (email, status) => {
-        axiosSecure.patch(`/update/user/status?email=${email}&status=${status}`)
+    const handleStatusChange = (email, status, role) => {
+        axiosSecure.patch(`/update/user/status?email=${email}&status=${status}&role=${role}`)
         .then(res=>{
             console.log(res.data);
             fetchUser()
@@ -82,10 +82,52 @@ const AllUsers = () => {
         <td>{user?.district}</td>
         <td>{user?.upazila}</td>
         <td>{user?.status}</td>
+
+
+
         <th className='flex gap-3'>
-          {
-            user?.status=='active'?(<button onClick={()=>handleStatusChange(user?.email, 'blocked')} className="btn btn-primary btn-sm">Block</button>): (<button onClick={()=>handleStatusChange(user?.email, 'active')} className="btn btn-primary btn-sm">Active</button>)
-          }
+          {user?.role !== 'Admin' && (
+  <>
+    {/* Block / Active */}
+    {user?.status === 'active' ? (
+      <button
+        onClick={() => handleStatusChange(user?.email, 'blocked', user?.role)}
+        className="btn btn-primary btn-sm"
+      >
+        Block
+      </button>
+    ) : (
+      <button
+        onClick={() => handleStatusChange(user?.email, 'active', user?.role)}
+        className="btn btn-primary btn-sm"
+      >
+        Active
+      </button>
+    )}
+
+    {/* Volunteer / Donor */}
+    {user?.role === 'Donor' ? (
+      <button
+        onClick={() =>
+          handleStatusChange(user?.email, 'active', 'Volunteer')
+        }
+        className="btn btn-primary btn-sm"
+      >
+        Make Volunteer
+      </button>
+    ) : (
+      <button
+        onClick={() =>
+          handleStatusChange(user?.email, 'active', 'Donor')
+        }
+        className="btn btn-primary btn-sm"
+      >
+        Remove Volunteer
+      </button>
+    )}
+  </>
+)}
+
           
         </th>
       </tr>)

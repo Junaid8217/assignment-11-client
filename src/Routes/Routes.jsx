@@ -5,7 +5,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 import MainDashboard from "../pages/Dashboard/MainDashboard";
-import ManageProduct from "../pages/Dashboard/ManageProduct";
+
 import AddRequest from "../pages/Dashboard/AddRequest";
 import PrivateRoute from "./PrivateRoute";
 import AllUsers from "../pages/Dashboard/AllUsers";
@@ -13,6 +13,10 @@ import MyRequest from "../pages/Dashboard/MyRequest";
 import Donate from "../pages/Donate";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import PaymentCancel from "../pages/PaymentCancel";
+import SearchRequest from "../pages/SearchRequest";
+import DonationRequest from "../pages/DonationRequest";
+import DonationRequestDetails from "../pages/DonationRequestDetails";
+
 
 const router = createBrowserRouter([
   {
@@ -33,7 +37,7 @@ const router = createBrowserRouter([
         },
         {
           path: '/donate',
-          Component: Donate
+          element: <PrivateRoute><Donate></Donate></PrivateRoute>
         },
         {
           path: '/payment-success',
@@ -42,6 +46,18 @@ const router = createBrowserRouter([
         {
           path: '/payment-cancelled',
           Component: PaymentCancel
+        },
+        {
+          path: '/search',
+          Component: SearchRequest
+        },
+        {
+          path: '/donation-request',
+          Component: DonationRequest
+        },
+        {
+          path: '/donation-request-details/:id',
+          element: <PrivateRoute><DonationRequestDetails></DonationRequestDetails></PrivateRoute>
         }
     ]
   },

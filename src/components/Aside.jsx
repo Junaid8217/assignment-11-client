@@ -42,7 +42,7 @@ const Aside = () => {
         </li>
 
         {
-          role == 'Donor' && (<li>
+          (role === 'Donor' || role === 'Volunteer') && (<li>
           <NavLink
             to="/dashboard/add-request"
             onClick={closeDrawer}
@@ -70,6 +70,9 @@ const Aside = () => {
           </NavLink>
         </li>)
         }
+
+
+        
 
         <li>
           <NavLink
