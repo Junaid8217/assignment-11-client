@@ -16,6 +16,8 @@ import PaymentCancel from "../pages/PaymentCancel";
 import SearchRequest from "../pages/SearchRequest";
 import DonationRequest from "../pages/DonationRequest";
 import DonationRequestDetails from "../pages/DonationRequestDetails";
+import ProfileDonationRequestDetails from "../pages/Dashboard/ProfileDonationRequestDetails";
+import EditRequest from "../pages/Dashboard/EditRequest";
 
 
 const router = createBrowserRouter([
@@ -84,6 +86,14 @@ const router = createBrowserRouter([
         path: 'my-request',
         element: <MyRequest></MyRequest>
         
+      },
+      {
+        path: 'donation-request/:id',
+        element: <ProfileDonationRequestDetails></ProfileDonationRequestDetails>
+      },
+      {
+        path: 'edit-request/:id',
+        element: <EditRequest></EditRequest>
       }
     ]
   }
