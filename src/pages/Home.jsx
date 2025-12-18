@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Img from '../assets/close-up-patient-with-tubes-her-arm-squeezing-ball-her-hand-while-donating-blood_1200x800.jpg'
-// Sample slider images
+
 
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <div className="font-sans">
 
-      {/* Hero / Banner Section */}
+     
 <div className="relative w-full h-[500px]">
   {/* Background Image */}
   <div
@@ -48,7 +48,7 @@ const Home = () => {
 
 
 
-      {/* Featured Section */}
+     
       <section className="py-16 bg-gray-100 text-center">
         <h2 className="text-3xl font-bold mb-8">Why Donate Blood?</h2>
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-4">
@@ -67,7 +67,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Contact Us Section */}
+     
       <section className="py-16 px-4 max-w-4xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-8">Contact Us</h2>
         <div className="grid md:grid-cols-2 gap-8">
@@ -103,7 +103,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Footer */}
+   
       <footer className="bg-red-600 text-white py-8 mt-16">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between px-4">
           <div className="mb-4 md:mb-0">

@@ -8,13 +8,14 @@ import { IoHome } from "react-icons/io5";
 import { signOut } from "firebase/auth";
 import auth from "../firebase/firebase.config";
 import { AuthContext } from "../provider/AuthProvider";
+import { toast } from "react-toastify";
 
 const Aside = () => {
   const activeClass = "bg-primary text-white rounded-lg";
 
-  const {role} = useContext(AuthContext)
+  const {role, userStatus} = useContext(AuthContext)
 
-  // Close drawer on mobile
+  
   const closeDrawer = () => {
     const drawer = document.getElementById("dashboard-drawer");
     if (drawer) drawer.checked = false;
@@ -24,11 +25,20 @@ const Aside = () => {
     signOut(auth)
   }
 
+  const handleBlockedClick = () => {
+  toast.error("Your account is blocked. You cannot add a donation request.");
+};
+
+
   return (
     <aside className="w-64 bg-base-200 min-h-screen p-5 flex flex-col">
-      <h2 className="text-2xl font-bold mb-8">Dashboard</h2>
+      <h2 className="text-2xl font-bold mb-8">
+  {role === "Admin" && "Admin Dashboard"}
+  {role === "Volunteer" && "Volunteer Dashboard"}
+  {role === "Donor" && "Donor Dashboard"}
+</h2>
 
-      {/* Menu */}
+  
       <ul className="menu space-y-2 text-lg flex-1">
 
         <li>
@@ -41,35 +51,57 @@ const Aside = () => {
           </NavLink>
         </li>
 
-        {
-          (role === 'Donor' || role === 'Volunteer') && (<li>
-          <NavLink
-            to="/dashboard/add-request"
-            onClick={closeDrawer}
-            className={({ isActive }) =>
-              "flex items-center gap-3 p-2" +
-              (isActive ? " " + activeClass : "")
-            }
-          >
-            <FiHome /> Add Request
-          </NavLink>
-        </li>)
+        {(role === "Donor" || role === "Volunteer") && (
+  <li>
+    {userStatus === "active" ? (
+      <NavLink
+        to="/dashboard/add-request"
+        onClick={closeDrawer}
+        className={({ isActive }) =>
+          "flex items-center gap-3 p-2" +
+          (isActive ? " " + activeClass : "")
         }
+      >
+        <FiHome /> Add Request
+      </NavLink>
+    ) : (
+      <button
+        onClick={handleBlockedClick}
+        className="flex items-center gap-3 p-2 text-gray-400 cursor-not-allowed"
+      >
+        <FiHome /> Add Request
+      </button>
+    )}
+  </li>
+)}
 
-        {
-          role == 'Admin' && (<li>
-          <NavLink
-            to="/dashboard/all-users"
-            onClick={closeDrawer}
-            className={({ isActive }) =>
-              "flex items-center gap-3 p-2" +
-              (isActive ? " " + activeClass : "")
-            }
-          >
-            <FiHome /> All Users
-          </NavLink>
-        </li>)
-        }
+
+        {(role === 'Admin' || role === 'Volunteer') && (
+  <li>
+    <NavLink
+      to="/dashboard/all-users"
+      onClick={closeDrawer}
+      className={({ isActive }) =>
+        "flex items-center gap-3 p-2" + (isActive ? " " + activeClass : "")
+      }
+    >
+      <FiHome /> All Users
+    </NavLink>
+  </li>
+)}
+
+{(role === "Admin" || role === "Volunteer") && (
+  <NavLink
+    to="/dashboard/all-blood-donation-request"
+    onClick={closeDrawer}
+    className={({ isActive }) =>
+      "flex items-center gap-3 p-2" + (isActive ? " " + activeClass : "")
+    }
+  >
+    <FiHome /> All Requests
+  </NavLink>
+)}
+
 
 
         
@@ -88,7 +120,7 @@ const Aside = () => {
         </li>
       </ul>
 
-      {/* Logout at bottom */}
+     
       <button
         onClick={() => {
           handleLogout();

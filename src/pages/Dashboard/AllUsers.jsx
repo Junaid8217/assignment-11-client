@@ -6,7 +6,7 @@ const AllUsers = () => {
 
     const axiosSecure = useAxiosSecure();
     const [users, setUsers] = useState([])
-    const {user, loading } = useContext(AuthContext)
+    const {user, loading, role } = useContext(AuthContext)
 
     const fetchUser = () => {
         axiosSecure.get('/users')
@@ -42,7 +42,7 @@ const AllUsers = () => {
         <div>
             <div className="overflow-x-auto">
   <table className="table">
-    {/* head */}
+   
     <thead>
       <tr>
         <th>Name</th>
@@ -55,7 +55,7 @@ const AllUsers = () => {
       </tr>
     </thead>
     <tbody>
-      {/* row 1 */}
+    
       {
         users?.map(user=><tr>
         
@@ -88,7 +88,7 @@ const AllUsers = () => {
         <th className='flex gap-3'>
           {user?.role !== 'Admin' && (
   <>
-    {/* Block / Active */}
+
     {user?.status === 'active' ? (
       <button
         onClick={() => handleStatusChange(user?.email, 'blocked', user?.role)}
@@ -105,26 +105,29 @@ const AllUsers = () => {
       </button>
     )}
 
-    {/* Volunteer / Donor */}
-    {user?.role === 'Donor' ? (
-      <button
-        onClick={() =>
-          handleStatusChange(user?.email, 'active', 'Volunteer')
-        }
-        className="btn btn-primary btn-sm"
-      >
-        Make Volunteer
-      </button>
-    ) : (
-      <button
-        onClick={() =>
-          handleStatusChange(user?.email, 'active', 'Donor')
-        }
-        className="btn btn-primary btn-sm"
-      >
-        Remove Volunteer
-      </button>
-    )}
+    
+    {role === 'Admin' && (
+  user?.role === 'Donor' ? (
+    <button
+      onClick={() =>
+        handleStatusChange(user?.email, 'active', 'Volunteer')
+      }
+      className="btn btn-primary btn-sm"
+    >
+      Make Volunteer
+    </button>
+  ) : (
+    <button
+      onClick={() =>
+        handleStatusChange(user?.email, 'active', 'Donor')
+      }
+      className="btn btn-primary btn-sm"
+    >
+      Remove Volunteer
+    </button>
+  )
+)}
+
   </>
 )}
 
@@ -142,7 +145,4 @@ const AllUsers = () => {
 
 export default AllUsers;
 
-//(<button onClick={()=>handleStatusChange(user?.email, 'active')} className="btn btn-primary btn-sm">Active</button>)
-
-//(<button onClick={()=>handleStatusChange(user?.email, 'blocked')} className="btn btn-sm btn-error">Blocked</button>)
 

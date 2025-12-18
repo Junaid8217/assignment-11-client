@@ -18,6 +18,9 @@ import DonationRequest from "../pages/DonationRequest";
 import DonationRequestDetails from "../pages/DonationRequestDetails";
 import ProfileDonationRequestDetails from "../pages/Dashboard/ProfileDonationRequestDetails";
 import EditRequest from "../pages/Dashboard/EditRequest";
+import MyAllRequests from "../pages/Dashboard/MyAllRequest";
+import AllRequest from "../pages/Dashboard/AllRequest";
+import AllFund from "../pages/AllFund";
 
 
 const router = createBrowserRouter([
@@ -60,6 +63,10 @@ const router = createBrowserRouter([
         {
           path: '/donation-request-details/:id',
           element: <PrivateRoute><DonationRequestDetails></DonationRequestDetails></PrivateRoute>
+        },
+        {
+          path: '/funding-page',
+          element: <PrivateRoute><AllFund></AllFund></PrivateRoute>
         }
     ]
   },
@@ -94,7 +101,16 @@ const router = createBrowserRouter([
       {
         path: 'edit-request/:id',
         element: <EditRequest></EditRequest>
-      }
+      },
+      {
+        path: 'my-all-request',
+        element: <MyAllRequests></MyAllRequests>
+      },
+      {
+        path: 'all-blood-donation-request',
+        element: <AllRequest></AllRequest>
+      },
+      
     ]
   }
 ]);

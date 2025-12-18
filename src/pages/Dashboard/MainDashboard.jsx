@@ -12,7 +12,7 @@ const MainDashboard = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [myRequest, setMyRequest] = useState([]);
 
-  // Fetch user profile
+  
   useEffect(() => {
     axiosSecure.get("/user-profile")
       .then(res => {
@@ -22,20 +22,20 @@ const MainDashboard = () => {
       .catch(err => console.error(err));
   }, [axiosSecure]);
 
-  // Fetch recent donation requests
+  
   useEffect(() => {
     axiosSecure.get('/my-request-profile')
       .then(res => setMyRequest(res.data.request))
       .catch(err => console.error(err));
   }, [axiosSecure]);
 
-  // Handle profile input change
+ 
   const handleChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Save profile changes
+ 
   const handleSave = async () => {
     try {
       await axiosSecure.put("/user-profile", formData);
@@ -48,7 +48,7 @@ const MainDashboard = () => {
     }
   };
 
-  // Update donation status
+  
   const handleStatus = async (id, status) => {
     try {
       await axiosSecure.patch(`/update/donation/status?id=${id}&donationStatus=${status}`);
@@ -62,7 +62,7 @@ const MainDashboard = () => {
     }
   };
 
-  // Delete donation request
+  
   const handleDelete = async id => {
     const confirmDelete = window.confirm("Are you sure you want to delete this request?");
     if (!confirmDelete) return;
@@ -80,7 +80,7 @@ const MainDashboard = () => {
   return (
     <div className="max-w-xl mx-auto p-6 bg-white rounded-xl shadow-md">
 
-      {/* Profile Header */}
+   
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-800">My Profile</h2>
         {!isEdit ? (
@@ -100,7 +100,7 @@ const MainDashboard = () => {
         )}
       </div>
 
-      {/* Avatar */}
+    
       <div className="flex flex-col items-center mb-6">
         <img
           src={profileInfo?.mainPhotURL}
@@ -110,7 +110,7 @@ const MainDashboard = () => {
         <p className="text-sm text-gray-500 mt-2">Profile Picture</p>
       </div>
 
-      {/* Profile Form */}
+    
       <form className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-1">Full Name</label>
@@ -165,7 +165,7 @@ const MainDashboard = () => {
         </div>
       </form>
 
-      {/* Recent Donation Requests */}
+   
       {myRequest.length > 0 && (
         <div className="mt-10">
           <div className="flex justify-between items-center mb-5">
@@ -178,14 +178,14 @@ const MainDashboard = () => {
                 key={req._id}
                 className="bg-white border rounded-xl shadow-sm hover:shadow-md transition p-5 flex flex-col justify-between"
               >
-                {/* Blood Tag */}
+              
                 <div className="mb-3">
                   <span className="text-xs px-3 py-1 rounded-full bg-red-100 text-red-600 font-semibold">
                     {req.blood}
                   </span>
                 </div>
 
-                {/* Request Details */}
+          
                 <div className="space-y-2 text-sm">
                   <p><span className="font-semibold">Recipient:</span> {req.recipientName}</p>
                   <p><span className="font-semibold">Location:</span> {req.district}, {req.upazila}</p>
@@ -217,7 +217,7 @@ const MainDashboard = () => {
                   )}
                 </div>
 
-                {/* Actions */}
+             
                 <div className="mt-4 flex flex-wrap gap-2">
                   {req.donationStatus === "inprogress" && (
                     <>
@@ -258,10 +258,10 @@ const MainDashboard = () => {
             ))}
           </div>
 
-          {/* View all */}
+          
           <div className="mt-6 text-right">
             <button
-              onClick={() => navigate("/dashboard/my-request")}
+              onClick={() => navigate("/dashboard/my-all-request")}
               className="btn btn-primary"
             >
               View My All Request

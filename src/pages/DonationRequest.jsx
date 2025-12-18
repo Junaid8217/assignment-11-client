@@ -10,7 +10,7 @@ const DonationRequest = () => {
   useEffect(() => {
     axiosInstance.get('/request')
       .then(res => {
-        // only pending requests
+        
         const pendingRequests = res.data.filter(
           req => req.donationStatus === 'pending'
         );

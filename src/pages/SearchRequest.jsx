@@ -52,13 +52,13 @@ const [loading, setLoading] = useState(false);
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
-  {/* Search Form */}
+  
   <div className="max-w-6xl mx-auto px-4">
     <form
       onSubmit={handleSearch}
       className="bg-white rounded-2xl shadow-md p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end"
     >
-      {/* Blood Group */}
+     
       <div className="flex flex-col">
         <label className="text-sm font-medium text-gray-700 mb-1">
           Blood Group
@@ -76,7 +76,7 @@ const [loading, setLoading] = useState(false);
         </select>
       </div>
 
-      {/* District */}
+     
       <div className="flex flex-col">
         <label className="text-sm font-medium text-gray-700 mb-1">
           District
@@ -95,7 +95,7 @@ const [loading, setLoading] = useState(false);
         </select>
       </div>
 
-      {/* Upazila */}
+      
       <div className="flex flex-col">
         <label className="text-sm font-medium text-gray-700 mb-1">
           Upazila
@@ -114,7 +114,7 @@ const [loading, setLoading] = useState(false);
         </select>
       </div>
 
-      {/* Button */}
+      
       <button
         type="submit"
         className="btn btn-primary w-full lg:w-auto bg-red-600 hover:bg-red-700"
@@ -124,7 +124,7 @@ const [loading, setLoading] = useState(false);
     </form>
   </div>
 
-  {/* Results Section */}
+  
   <div className="max-w-6xl mx-auto mt-10 px-4">
     {loading && (
       <p className="text-center text-gray-500">
@@ -144,7 +144,7 @@ const [loading, setLoading] = useState(false);
           key={req._id}
           className="bg-white rounded-2xl shadow-md border p-5 flex flex-col justify-between"
         >
-          {/* Header */}
+         
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-lg text-gray-800">
               {req.recipientName}
@@ -154,7 +154,7 @@ const [loading, setLoading] = useState(false);
             </span>
           </div>
 
-          {/* Details */}
+         
           <div className="text-sm text-gray-600 space-y-1">
             <p><strong>Hospital:</strong> {req.hospitalName}</p>
             <p><strong>Location:</strong> {req.upazila}, {req.district}</p>
@@ -162,12 +162,12 @@ const [loading, setLoading] = useState(false);
             <p><strong>Time:</strong> {req.donationTime}</p>
           </div>
 
-          {/* Message */}
+        
           <div className="bg-gray-50 border rounded-xl p-3 mt-4 text-sm text-gray-700">
             {req.requestMessage}
           </div>
 
-          {/* Footer */}
+        
           <div className="flex justify-between items-center mt-5">
             <span
               className={`badge ${

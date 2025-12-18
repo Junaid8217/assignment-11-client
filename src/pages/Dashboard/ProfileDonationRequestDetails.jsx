@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { AuthContext } from '../../provider/AuthProvider';
 
 const ProfileDonationRequestDetails = () => {
 
@@ -9,12 +10,17 @@ const ProfileDonationRequestDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const [request, setRequest] = useState(null);
+  const{role} = useContext(AuthContext)
 
-  useEffect(() => {
-    axiosSecure.get(`/donation-request/${id}`).then(res => {
-      setRequest(res.data);
-    });
-  }, [axiosSecure, id]);
+useEffect(() => {
+  const api = role === "Admin" 
+    ? `/admin/donation-request/${id}`
+    : `/donation-request/${id}`;
+
+  axiosSecure.get(api)
+    .then(res => setRequest(res.data))
+    .catch(err => console.error(err));
+}, [axiosSecure, id, role]);
 
   if (!request) return <p>Loading...</p>;
 

@@ -36,21 +36,7 @@ const DonationRequestDetails = () => {
         
     },[axiosSecure])
 
-    // console.log(users);
-
-//     const handleStatusChange = (id, 
-// donationStatus) => {
-//         axiosSecure.patch(`/update/donation/status?id=${id}&donationStatus=${donationStatus}`)
-//         .then(res=>{
-//             console.log(res.data);
-//             fetchUser()    
-//         })
-//     }
-
-
-
-
-
+   
 
 
   useEffect(() => {
@@ -91,7 +77,7 @@ donationStatus) => {
         Donation Request Details
       </h1>
 
-      {/* Details Card */}
+     
       <div className="bg-white shadow rounded-xl p-6 space-y-3">
         <p><strong>Recipient Name:</strong> {request.recipientName}</p>
         <p><strong>Blood Group:</strong> <span className="text-red-600 font-bold">{request.blood}</span></p>
@@ -117,7 +103,7 @@ donationStatus) => {
         )}
       </div>
 
-      {/* Modal */}
+      
       {openModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-full max-w-md">
