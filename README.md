@@ -17,7 +17,7 @@ The purpose of this application is to:
 
 ## 🌐 Live URL
 🔗 https://unique-bublanina-9b3ac2.netlify.app 
-*(Replace with your deployed project URL)*
+
 
 ---
 
