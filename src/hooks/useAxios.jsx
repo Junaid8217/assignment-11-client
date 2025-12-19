@@ -2,7 +2,7 @@ import axios from "axios";
 
 //interceptors
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: 'https://backend-11-topaz.vercel.app'
 })
 
 const useAxios = () =>{

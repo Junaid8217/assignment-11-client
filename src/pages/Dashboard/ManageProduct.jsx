@@ -26,7 +26,7 @@ const ManageProduct = () => {
     return (
         <div className="overflow-x-auto">
   <table className="table">
-    {/* head */}
+  
     <thead>
       <tr>
         
@@ -38,7 +38,7 @@ const ManageProduct = () => {
       </tr>
     </thead>
     <tbody>
-      {/* row 1 */}
+    
       {
         products?.map(product=> 
             <tr>
