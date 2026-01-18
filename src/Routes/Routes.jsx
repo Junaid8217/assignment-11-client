@@ -3,6 +3,12 @@ import RootLayout from "../RootLayout/RootLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import About from "../pages/About";
+import Contact from "../pages/Contact";
+import Blog from "../pages/Blog";
+import Help from "../pages/Help";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import TermsOfService from "../pages/TermsOfService";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 import MainDashboard from "../pages/Dashboard/MainDashboard";
 
@@ -62,11 +68,55 @@ const router = createBrowserRouter([
         },
         {
           path: '/donation-request-details/:id',
-          element: <PrivateRoute><DonationRequestDetails></DonationRequestDetails></PrivateRoute>
+          element: <DonationRequestDetails></DonationRequestDetails> 
         },
         {
           path: '/funding-page',
           element: <PrivateRoute><AllFund></AllFund></PrivateRoute>
+        },
+        {
+          path: '/about',
+          Component: About
+        },
+        {
+          path: '/contact',
+          Component: Contact
+        },
+        {
+          path: '/blog',
+          Component: Blog
+        },
+        {
+          path: '/help',
+          Component: Help
+        },
+        {
+          path: '/privacy-policy',
+          Component: PrivacyPolicy
+        },
+        {
+          path: '/terms-of-service',
+          Component: TermsOfService
+        },
+        {
+          path: '/health-guidelines',
+          element: <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900"><div className="text-center"><h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Health Guidelines</h1><p className="text-gray-600 dark:text-gray-300">Coming Soon</p></div></div>
+        },
+        {
+          path: '/eligibility',
+          element: <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900"><div className="text-center"><h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Donor Eligibility</h1><p className="text-gray-600 dark:text-gray-300">Coming Soon</p></div></div>
+        },
+        {
+          path: '/faq',
+          element: <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900"><div className="text-center"><h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">FAQ</h1><p className="text-gray-600 dark:text-gray-300">Coming Soon</p></div></div>
+        },
+        {
+          path: '/cookie-policy',
+          element: <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900"><div className="text-center"><h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Cookie Policy</h1><p className="text-gray-600 dark:text-gray-300">Coming Soon</p></div></div>
+        },
+        {
+          path: '/disclaimer',
+          element: <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900"><div className="text-center"><h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Medical Disclaimer</h1><p className="text-gray-600 dark:text-gray-300">Coming Soon</p></div></div>
         }
     ]
   },
