@@ -49,7 +49,7 @@ const Login = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       setUser(user);
-      navigate(location.state?.from || '/dashboard', { replace: true });
+      navigate(location.state?.from || '/', { replace: true });
     } catch (err) {
       console.error(err);
       setError("Invalid email or password. Please try again.");

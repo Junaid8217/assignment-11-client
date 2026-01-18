@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { AuthContext } from '../../provider/AuthProvider';
 import { toast } from 'react-toastify';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -29,6 +30,7 @@ import {
 const MainDashboard = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  const { role } = useContext(AuthContext);
 
   const [profileInfo, setProfileInfo] = useState({});
   const [formData, setFormData] = useState({});
@@ -216,10 +218,10 @@ const MainDashboard = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Dashboard Overview
+              {role === 'Admin' ? 'Dashboard Overview' : 'My Dashboard'}
             </h1>
             <p className="text-gray-600 dark:text-gray-300">
-              Welcome back, {profileInfo.name || 'User'}! Here's your blood donation activity.
+              Welcome back, {profileInfo.name || 'User'}! {role === 'Admin' ? "Here's your blood donation activity." : "Manage your donation requests and profile."}
             </p>
           </div>
           <div className="flex gap-3">
@@ -230,8 +232,11 @@ const MainDashboard = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Admin-Only Sections */}
+        {role === 'Admin' && (
+          <>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -333,6 +338,8 @@ const MainDashboard = () => {
             size={200}
           />
         </div>
+        </>
+        )}
 
         {/* Profile and Recent Requests */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -465,38 +472,38 @@ const MainDashboard = () => {
                       key={req._id}
                       className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow"
                     >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-3">
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center shrink-0">
                             <span className="text-red-600 dark:text-red-400 font-bold text-sm">
                               {req.blood}
                             </span>
                           </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-white">
+                          <div className="min-w-0 flex-1">
+                            <h4 className="font-semibold text-gray-900 dark:text-white truncate">
                               {req.recipientName}
                             </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              <MapPin size={12} className="inline mr-1" />
+                            <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                              <MapPin size={12} className="inline mr-1 shrink-0" />
                               {req.district}, {req.upazila}
                             </p>
                           </div>
                         </div>
                         
-                        <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(req.donationStatus)}`}>
+                        <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium self-start ${getStatusColor(req.donationStatus)}`}>
                           {getStatusIcon(req.donationStatus)}
-                          <span className="capitalize">{req.donationStatus}</span>
+                          <span className="capitalize whitespace-nowrap">{req.donationStatus}</span>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
                         <div className="flex items-center gap-1">
-                          <Calendar size={12} />
-                          <span>{req.donationDate}</span>
+                          <Calendar size={12} className="shrink-0" />
+                          <span className="truncate">{req.donationDate}</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Clock size={12} />
-                          <span>{req.donationTime}</span>
+                          <Clock size={12} className="shrink-0" />
+                          <span className="truncate">{req.donationTime}</span>
                         </div>
                       </div>
 
@@ -505,22 +512,22 @@ const MainDashboard = () => {
                           <p className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-1">
                             Donor Information
                           </p>
-                          <p className="text-sm text-blue-700 dark:text-blue-400">
+                          <p className="text-sm text-blue-700 dark:text-blue-400 truncate">
                             {req.donorName}
                           </p>
-                          <p className="text-xs text-blue-600 dark:text-blue-500">
+                          <p className="text-xs text-blue-600 dark:text-blue-500 truncate">
                             {req.donorEmail}
                           </p>
                         </div>
                       )}
 
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-2">
                         {req.donationStatus === "inprogress" && (
-                          <>
+                          <div className="flex gap-2 mb-2 sm:mb-0">
                             <Button
                               onClick={() => handleStatus(req._id, "done")}
                               size="sm"
-                              className="text-xs"
+                              className="text-xs flex-1 sm:flex-none"
                             >
                               <CheckCircle size={12} className="mr-1" />
                               Complete
@@ -529,40 +536,48 @@ const MainDashboard = () => {
                               onClick={() => handleStatus(req._id, "canceled")}
                               variant="secondary"
                               size="sm"
-                              className="text-xs"
+                              className="text-xs flex-1 sm:flex-none"
                             >
                               <XCircle size={12} className="mr-1" />
                               Cancel
                             </Button>
-                          </>
+                          </div>
                         )}
-                        <Button
-                          onClick={() => navigate(`/dashboard/edit-request/${req._id}`)}
-                          variant="secondary"
-                          size="sm"
-                          className="text-xs"
-                        >
-                          <Edit size={12} className="mr-1" />
-                          Edit
-                        </Button>
-                        <Button
-                          onClick={() => navigate(`/dashboard/donation-request/${req._id}`)}
-                          variant="secondary"
-                          size="sm"
-                          className="text-xs"
-                        >
-                          <Eye size={12} className="mr-1" />
-                          View
-                        </Button>
-                        <Button
-                          onClick={() => handleDelete(req._id)}
-                          variant="outline"
-                          size="sm"
-                          className="text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
-                        >
-                          <Trash2 size={12} className="mr-1" />
-                          Delete
-                        </Button>
+                        
+                        <div className="flex gap-2 flex-wrap">
+                          <Button
+                            onClick={() => navigate(`/dashboard/edit-request/${req._id}`)}
+                            variant="secondary"
+                            size="sm"
+                            className="text-xs flex-1 sm:flex-none min-w-0"
+                          >
+                            <Edit size={12} className="mr-1 shrink-0" />
+                            <span className="hidden sm:inline">Edit</span>
+                            <span className="sm:hidden">Edit</span>
+                          </Button>
+                          
+                          <Button
+                            onClick={() => navigate(`/dashboard/donation-request/${req._id}`)}
+                            variant="secondary"
+                            size="sm"
+                            className="text-xs flex-1 sm:flex-none min-w-0"
+                          >
+                            <Eye size={12} className="mr-1 shrink-0" />
+                            <span className="hidden sm:inline">View</span>
+                            <span className="sm:hidden">View</span>
+                          </Button>
+                          
+                          <Button
+                            onClick={() => handleDelete(req._id)}
+                            variant="outline"
+                            size="sm"
+                            className="text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 flex-1 sm:flex-none min-w-0"
+                          >
+                            <Trash2 size={12} className="mr-1 shrink-0" />
+                            <span className="hidden sm:inline">Delete</span>
+                            <span className="sm:hidden">Del</span>
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   ))}
